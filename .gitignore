@@ -6,6 +6,7 @@ __pycache__
 db.sqlite3
 media
 settings_local.py
+public
 
 # PyCharm
 .idea

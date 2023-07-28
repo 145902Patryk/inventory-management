@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 'apps.logger.apps.LoggerConfig',
+    'apps.inventory.apps.InventoryConfig',
 ]
 
 MIDDLEWARE = [
@@ -129,8 +131,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'public/uploads/')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 try:
-    print('try')
     from .settings_local import *  # noqa: F403, F401
 except ImportError:
-    print('err')
     pass
