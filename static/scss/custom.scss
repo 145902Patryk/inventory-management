@@ -1,0 +1,35 @@
+.item {
+  background-color: rgba(86, 61, 124, .15);
+  margin: 5px;
+  text-align: center;
+
+  .img-div {
+    padding: 10px;
+    height: 250px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
+}
+
+#id_starts_with {
+  display: flex;
+  user-select: none;
+
+  div {
+    width: 100%;
+  }
+
+  input {
+    display: none;
+  }
+
+  label {
+    cursor: pointer;
+  }
+}
+
+.selected {
+  font-weight: bold;
+  color: greenyellow;
+}

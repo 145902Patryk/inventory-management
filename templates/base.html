@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Patryk Laszuk">
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <title>Inventory Manager</title>
+  <link rel="icon" href="{% static 'fav.ico' %}">
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  {% block extra_css %}
+  {% endblock extra_css %}
+</head>
+<body>
+
+{% block content %}
+{% endblock %}
+<script src="{% static 'js/jquery-3.7.0.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+{% block extra_js %}
+{% endblock extra_js %}
+</body>
+</html>
