@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 'apps.logger.apps.LoggerConfig',
+    'apps.inventory.apps.InventoryConfig',
 ]
 
 MIDDLEWARE = [
@@ -117,6 +119,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'apps_static/')
 
@@ -129,8 +135,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'public/uploads/')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 try:
-    print('try')
     from .settings_local import *  # noqa: F403, F401
 except ImportError:
-    print('err')
     pass

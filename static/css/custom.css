@@ -1,0 +1,33 @@
+.item {
+  background-color: rgba(86, 61, 124, 0.15);
+  margin: 5px;
+  text-align: center;
+}
+.item .img-div {
+  padding: 10px;
+  height: 250px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+#id_starts_with {
+  display: flex;
+  user-select: none;
+}
+#id_starts_with div {
+  width: 100%;
+}
+#id_starts_with input {
+  display: none;
+}
+#id_starts_with label {
+  cursor: pointer;
+}
+
+.selected {
+  font-weight: bold;
+  color: greenyellow;
+}
+
+/*# sourceMappingURL=custom.css.map */

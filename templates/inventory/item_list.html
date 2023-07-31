@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/custom.min.css' %}">
+{% endblock extra_css %}
+{% block content %}
+
+  <div class="container">
+    {{ now }}
+    <div class="row">
+      {% for item in object_list %}
+        <div class="col-md-4" style="padding: 10px">
+          <div class="item">
+            {% if item.image %}
+              <div class="img-div" style="background-image: url('{{ item.image.url }}')"></div>
+            {% else %}
+              <div class="img-div" style="background-image: url('{% static 'No-Image.png' %}')"></div>
+            {% endif %}
+
+            <p>{{ item.name }}</p>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <form method="post" action="{% url 'set_filters' %}">
+      {% csrf_token %}
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+          {{ form.name }}
+        </div>
+      </div>
+      <hr class="mb-4">
+      <label for="{{ form.tags.id_for_label }}">{{ form.tags.label }}</label>
+      {{ form.tags }}
+      <hr class="mb-4">
+      <div class="d-block my-3">
+        <div class="custom-control custom-radio">
+          {{ form.starts_with }}
+        </div>
+      </div>
+      <hr class="mb-4">
+      <button class="btn btn-primary" type="submit">Filter</button>
+      <a class="btn btn-secondary" role="button" href="{% url 'clear_filters' %}?next={% url 'items_list' %}">Clear
+        filters</a>
+    </form>
+  </div>
+
+{% endblock content %}
+{% block extra_js %}
+  <script>
+      const inputs = $("#id_starts_with input")
+      let dict = {}
+      inputs.each((idx, el) => {
+          let input = $(el)
+          dict[input.attr('id')] = input.is(':checked')
+          if (input.is(':checked')) {
+              $("label[for='" + input.attr('id') + "']").addClass('selected')
+          }
+      })
+      inputs.on('click', (e) => {
+          let input = $(e.currentTarget)
+          let label = $("label[for='" + input.attr('id') + "']");
+          console.log('click', input.attr('value'))
+          $('#id_starts_with label').removeClass('selected')
+          if (input.is(':checked') === dict[input.attr('id')]) {
+              input.prop('checked', false);
+          } else {
+              label.addClass('selected')
+          }
+          Object.keys(dict).forEach(v => dict[v] = false)
+          dict[input.attr('id')] = input.is(':checked')
+
+      });
+  </script>
+{% endblock extra_js %}
