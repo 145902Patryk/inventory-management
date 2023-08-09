@@ -1,0 +1,22 @@
+{% load static %}
+{% for item in objects %}
+  <div class="col-md-4 item-col">
+    <div class="item">
+      <div class="img-div img-click"
+           {% if item.image %}style="background-image: url('{{ item.image.url }}')"{% endif %}>
+        <div class="row">
+          <div class="col-6">
+            <ul class="list-group list-group-flush">
+              {% for tag in item.tags.all %}
+                <li class="list-group-item">{{ tag.name }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="col-6">tekst...</div>
+        </div>
+
+      </div>
+      <p>{{ item.name }}</p>
+    </div>
+  </div>
+{% endfor %}

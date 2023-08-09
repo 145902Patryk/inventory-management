@@ -1,4 +1,4 @@
-# Foobar
+# Inventory Management
 
 Django app for managing inventory.
 

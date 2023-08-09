@@ -1,0 +1,25 @@
+{% load inventory_extras %}
+<div class="row my-pagination">
+  <div class="col-sm-2">
+    {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+    {% endif %}
+  </div>
+
+  <div class="col-sm-8 text-center">
+    {% get_proper_elided_page_range paginator page_obj.number as pages_list %}
+    {% for page in pages_list %}
+      {% if page_obj.number == page or paginator.ELLIPSIS == page %}
+        <span>{{ page }}</span>
+      {% else %}
+        <a href="?page={{ page }}">{{ page }}</a>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <div class="col-sm-2">
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}">Next</a>
+    {% endif %}
+  </div>
+</div>
