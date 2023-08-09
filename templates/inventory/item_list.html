@@ -3,32 +3,24 @@
 
 {% block extra_css %}
   <link rel="stylesheet" href="{% static 'css/custom.min.css' %}">
+  <style>
+      .img-div {
+          background-image: url('{% static 'No-Image.png' %}')
+      }
+  </style>
 {% endblock extra_css %}
 {% block content %}
 
   <div class="container">
-    {{ now }}
-    <div class="row">
-      {% for item in object_list %}
-        <div class="col-md-4" style="padding: 10px">
-          <div class="item">
-            {% if item.image %}
-              <div class="img-div" style="background-image: url('{{ item.image.url }}')"></div>
-            {% else %}
-              <div class="img-div" style="background-image: url('{% static 'No-Image.png' %}')"></div>
-            {% endif %}
-
-            <p>{{ item.name }}</p>
-          </div>
-        </div>
-      {% endfor %}
-    </div>
     <form method="post" action="{% url 'set_filters' %}">
       {% csrf_token %}
       <div class="row">
         <div class="col-md-6 mb-3">
           <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
           {{ form.name }}
+        </div>
+        <div class="col-md-6 mb-3 auto-margin text-center">
+          {{ now }}
         </div>
       </div>
       <hr class="mb-4">
@@ -41,16 +33,54 @@
         </div>
       </div>
       <hr class="mb-4">
-      <button class="btn btn-primary" type="submit">Filter</button>
-      <a class="btn btn-secondary" role="button" href="{% url 'clear_filters' %}?next={% url 'items_list' %}">Clear
-        filters</a>
+      <div class="row">
+        <div class="col-md-4 layouts">
+          <button type="button" class="btn btn-secondary">
+            <i class="bi bi-grid-3x3-gap-fill"></i>
+          </button>
+          <button type="button" class="btn btn-outline-secondary">
+            <i class="bi bi-grip-horizontal"></i>
+          </button>
+
+          <button type="button" class="btn btn-outline-secondary">
+            <i class="bi bi-justify"></i>
+          </button>
+
+        </div>
+        <div class="col-md-8 buttons">
+          <button class="btn btn-primary" type="submit">Filter</button>
+          <a class="btn btn-secondary" role="button" href="{% url 'clear_filters' %}?next={% url 'items_list' %}">
+            Clear filters</a>
+        </div>
+      </div>
     </form>
     <div class="row">
       {% include '_partials/items_layout1.html' with objects=object_list %}
     </div>
     {% include '_partials/pagination.html' %}
   </div>
+  <div class="modal fade" id="imgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-6" style="height: 90vh">
+              <img alt="Full img" src="" class="imgpreview">
 
+            </div>
+            <div class="col-md-6">
+              tekst...
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
 {% endblock content %}
 {% block extra_js %}
   <script>
@@ -66,7 +96,6 @@
       inputs.on('click', (e) => {
           let input = $(e.currentTarget)
           let label = $("label[for='" + input.attr('id') + "']");
-          console.log('click', input.attr('value'))
           $('#id_starts_with label').removeClass('selected')
           if (input.is(':checked') === dict[input.attr('id')]) {
               input.prop('checked', false);
@@ -75,7 +104,10 @@
           }
           Object.keys(dict).forEach(v => dict[v] = false)
           dict[input.attr('id')] = input.is(':checked')
-
+      });
+      $('.img-click').on('click', (e) => {
+          $('.imgpreview').attr('src', $(e.currentTarget).css('background-image').replace(/^url\(['"]?/, '').replace(/['"]?\)$/, ''));
+          $('#imgModal').modal('show');
       });
   </script>
 {% endblock extra_js %}
