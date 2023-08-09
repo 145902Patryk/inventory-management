@@ -45,6 +45,10 @@
       <a class="btn btn-secondary" role="button" href="{% url 'clear_filters' %}?next={% url 'items_list' %}">Clear
         filters</a>
     </form>
+    <div class="row">
+      {% include '_partials/items_layout1.html' with objects=object_list %}
+    </div>
+    {% include '_partials/pagination.html' %}
   </div>
 
 {% endblock content %}
