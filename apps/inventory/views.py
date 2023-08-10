@@ -12,8 +12,14 @@ from .utils import filter_to_item_query
 
 class ItemsListView(ListView):
     model = Item
-    paginate_by = 20
+    paginate_by = 6
     filters = {}
+
+    def get_paginate_by(self, queryset):
+        """
+        todo: Per page elements selection.
+        """
+        return self.paginate_by
 
     def dispatch(self, request, *args, **kwargs):
         self.filters = json.loads(self.request.session.get('filters', '{}'))

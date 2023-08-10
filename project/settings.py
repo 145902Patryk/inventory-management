@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'ckeditor',
     # 'apps.logger.apps.LoggerConfig',
     'apps.inventory.apps.InventoryConfig',
 ]
@@ -133,6 +134,14 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'public/uploads/')
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'width': 900,
+        'height': 200,
+    },
+}
 
 try:
     from .settings_local import *  # noqa: F403, F401

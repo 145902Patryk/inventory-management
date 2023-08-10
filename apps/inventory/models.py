@@ -1,3 +1,4 @@
+from ckeditor.fields import RichTextField
 from django.db import models
 
 
@@ -13,7 +14,7 @@ class Tag(models.Model):
 
 class Item(models.Model):
     name = models.CharField('Name', max_length=255)
-    description = models.TextField('Description', blank=True)
+    description = RichTextField('Description', blank=True)
     image = models.ImageField('Image', blank=True, null=True)
     quantity = models.IntegerField('Quantity', default=1)
     tags = models.ManyToManyField(Tag, verbose_name='Tags')
