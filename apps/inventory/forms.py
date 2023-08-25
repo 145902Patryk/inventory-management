@@ -24,7 +24,11 @@ class RowCheckboxSelectMultiple(forms.CheckboxSelectMultiple):
 
 
 class FilterForm(forms.Form):
-    name = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    name = forms.CharField(
+        label='Name/Description',
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
     tags = forms.ModelMultipleChoiceField(
         required=False,
         queryset=Tag.objects.all(),

@@ -12,7 +12,7 @@ from .utils import filter_to_item_query
 
 class ItemsListView(ListView):
     model = Item
-    paginate_by = 6
+    paginate_by = 9
     filters = {}
 
     def get_paginate_by(self, queryset):
@@ -26,8 +26,8 @@ class ItemsListView(ListView):
         return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
-        query_filter = filter_to_item_query(self.filters)
-        return self.model.objects.filter(**query_filter).distinct().prefetch_related('tags')
+        query_filter, q_filter = filter_to_item_query(self.filters)
+        return self.model.objects.filter(*q_filter, **query_filter).distinct().prefetch_related('tags')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
