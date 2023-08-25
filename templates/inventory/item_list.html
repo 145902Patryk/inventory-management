@@ -10,7 +10,6 @@
   </style>
 {% endblock extra_css %}
 {% block content %}
-
   <div class="container">
     <form method="post" action="{% url 'set_filters' %}">
       {% csrf_token %}
@@ -69,18 +68,18 @@
           <div class="row">
             <div class="col-md-6" style="height: 90vh">
               <img alt="Full img" src="" class="imgpreview">
-
             </div>
             <div class="col-md-6">
-              tekst...
+              <div id="modalDescription"></div>
             </div>
           </div>
 
         </div>
       </div>
     </div>
+
   </div>
-  </div>
+
 {% endblock content %}
 {% block extra_js %}
   <script>
@@ -106,7 +105,11 @@
           dict[input.attr('id')] = input.is(':checked')
       });
       $('.img-click').on('click', (e) => {
-          $('.imgpreview').attr('src', $(e.currentTarget).css('background-image').replace(/^url\(['"]?/, '').replace(/['"]?\)$/, ''));
+          let el = $(e.currentTarget)
+          let body = el.children('.description-hidden')[0].innerHTML
+          body +=`<br><p>Created: <b>${el.data('created_at')}</b></p><p>Last update: <b>${el.data('updated_at')}</b></p>`
+          $('#modalDescription').html(body)
+          $('.imgpreview').attr('src', el.css('background-image').replace(/^url\(['"]?/, '').replace(/['"]?\)$/, ''));
           $('#imgModal').modal('show');
       });
   </script>

@@ -127,4 +127,12 @@
   }
 }
 
+#modalDescription {
+  margin: 20px;
+}
+
+.description-hidden {
+  display: none;
+}
+
 /*# sourceMappingURL=custom.css.map */

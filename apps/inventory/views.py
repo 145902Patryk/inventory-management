@@ -27,7 +27,7 @@ class ItemsListView(ListView):
 
     def get_queryset(self):
         query_filter = filter_to_item_query(self.filters)
-        return self.model.objects.filter(**query_filter).prefetch_related('tags')
+        return self.model.objects.filter(**query_filter).distinct().prefetch_related('tags')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

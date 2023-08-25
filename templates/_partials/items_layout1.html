@@ -2,8 +2,9 @@
 {% for item in objects %}
   <div class="col-md-4 item-col">
     <div class="item">
-      <div class="img-div img-click"
+      <div class="img-div img-click" data-created_at="{{ item.created_at }}" data-updated_at="{{ item.updated_at }}"
            {% if item.image %}style="background-image: url('{{ item.image.url }}')"{% endif %}>
+      <div class="description-hidden">{{ item.description|safe }}</div>
         <div class="row">
           <div class="col-6">
             <ul class="list-group list-group-flush">
@@ -12,7 +13,7 @@
               {% endfor %}
             </ul>
           </div>
-          <div class="col-6">tekst...</div>
+          <div class="col-6"></div>
         </div>
 
       </div>

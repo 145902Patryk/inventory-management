@@ -7,6 +7,7 @@ db.sqlite3
 media
 settings_local.py
 public
+apps_static
 
 # PyCharm
 .idea
