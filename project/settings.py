@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'ckeditor',
     # 'apps.logger.apps.LoggerConfig',
     'apps.inventory.apps.InventoryConfig',
+    'apps.layout.apps.LayoutConfig',
 ]
 
 MIDDLEWARE = [

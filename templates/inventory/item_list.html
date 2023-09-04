@@ -11,7 +11,7 @@
 {% endblock extra_css %}
 {% block content %}
   <div class="container">
-    <form method="post" action="{% url 'set_filters' %}">
+    <form method="post" action="{% url 'inventory:set_filters' %}">
       {% csrf_token %}
       <div class="row">
         <div class="col-md-6 mb-3">
@@ -48,7 +48,8 @@
         </div>
         <div class="col-md-8 buttons">
           <button class="btn btn-primary" type="submit">Filter</button>
-          <a class="btn btn-secondary" role="button" href="{% url 'clear_filters' %}?next={% url 'items_list' %}">
+          <a class="btn btn-secondary" role="button"
+             href="{% url 'inventory:clear_filters' %}?next={% url 'inventory:items_list' %}">
             Clear filters</a>
         </div>
       </div>

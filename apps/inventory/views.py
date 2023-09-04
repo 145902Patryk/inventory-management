@@ -41,12 +41,12 @@ def set_filters(request):
         form = FilterForm(request.POST)
         if form.is_valid():
             request.session['filters'] = json.dumps(form.cleaned_data)
-            return HttpResponseRedirect(reverse_lazy('items_list'))
+            return HttpResponseRedirect(reverse_lazy('inventory:items_list'))
     return HttpResponse(status=400)
 
 
 def clear_filters(request):
-    url = request.GET.get('next', reverse_lazy('items_list'))
+    url = request.GET.get('next', reverse_lazy('inventory:items_list'))
     try:
         del request.session['filters']
     except KeyError:
