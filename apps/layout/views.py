@@ -1,5 +1,6 @@
 from django.views.generic import ListView
 
+from apps.layout.forms import LocationForm
 from apps.layout.models import Layout
 
 
@@ -11,8 +12,17 @@ class MainLayoutView(ListView):
         ctx = super().get_context_data(**kwargs)
         js_obj = {}
         for layout in self.object_list:
-            arr = [{'x': loc.x, 'y': loc.y, 'name': loc.name} for loc in layout.location_set.all()]
-            js_obj[f'image_preview{layout.pk}'] = arr
-        print(js_obj)
+            spots = layout.location_set.all()
+            arr = [{'x': sp.x, 'y': sp.y, 'name': sp.name, 'pk': sp.pk} for sp in spots]
+            js_obj[f'imagePreview{layout.pk}'] = arr
         ctx['js_obj'] = js_obj
+        ctx['form'] = LocationForm()
         return ctx
+
+
+def add_location(request):
+    """Set amount of items per page."""
+    if request.method == 'POST':
+        form = LocationForm(request.POST)
+        print(form.is_valid())
+        print(form.cleaned_data)
