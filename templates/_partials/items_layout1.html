@@ -2,9 +2,16 @@
 {% for item in objects %}
   <div class="col-md-4 item-col">
     <div class="item">
-      <div class="img-div img-click" data-created_at="{{ item.created_at }}" data-updated_at="{{ item.updated_at }}"
+      <div class="img-div img-click"
            {% if item.image %}style="background-image: url('{{ item.image.url }}')"{% endif %}>
-      <div class="description-hidden">{{ item.description|safe }}</div>
+        <div class="for-modal">
+          <div>{{ item.description|safe }}</div>
+          {% if item.location %}
+            <p>Location: <b>{{ item.location }}</b></p>
+          {% endif %}
+          <p>Created: <b>{{ item.created_at }}</b></p>
+          <p>Last update: <b>{{ item.updated_at }}</b></p>
+        </div>
         <div class="row">
           <div class="col-6">
             <ul class="list-group list-group-flush">

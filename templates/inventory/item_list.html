@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block extra_css %}
-  <link rel="stylesheet" href="{% static 'css/custom.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/items.min.css' %}">
   <style>
       .img-div {
           background-image: url('{% static 'No-Image.png' %}')
@@ -19,7 +19,8 @@
           {{ form.name }}
         </div>
         <div class="col-md-6 mb-3 auto-margin text-center">
-          {{ now }}
+          <label for="{{ form.location.id_for_label }}">{{ form.location.label }}</label>
+          {{ form.location }}
         </div>
       </div>
       <hr class="mb-4">
@@ -106,10 +107,8 @@
           dict[input.attr('id')] = input.is(':checked')
       });
       $('.img-click').on('click', (e) => {
-          let el = $(e.currentTarget)
-          let body = el.children('.description-hidden')[0].innerHTML
-          body +=`<br><p>Created: <b>${el.data('created_at')}</b></p><p>Last update: <b>${el.data('updated_at')}</b></p>`
-          $('#modalDescription').html(body)
+          const el = $(e.currentTarget)
+          $('#modalDescription').html(el.children('.for-modal')[0].innerHTML)
           $('.imgpreview').attr('src', el.css('background-image').replace(/^url\(['"]?/, '').replace(/['"]?\)$/, ''));
           $('#imgModal').modal('show');
       });

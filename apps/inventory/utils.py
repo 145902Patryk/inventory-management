@@ -9,6 +9,7 @@ def filter_to_item_query(filter_dict):
     new_dict = {
         'tags__pk__in': filter_dict.get('tags'),
         'name__istartswith': filter_dict.get('starts_with'),
+        'location': filter_dict.get('location')
     }
     name = filter_dict.get('name')
     q_filter = []
