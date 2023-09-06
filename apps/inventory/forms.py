@@ -5,6 +5,7 @@ from django.forms.renderers import get_default_renderer
 from django.utils.safestring import mark_safe
 
 from .models import Tag
+from apps.layout.models import Location
 
 
 def alphabet():
@@ -29,6 +30,12 @@ class FilterForm(forms.Form):
         required=False,
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
+    location = forms.ModelChoiceField(
+        label='Location',
+        required=False,
+        queryset=Location.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
     tags = forms.ModelMultipleChoiceField(
         required=False,
         queryset=Tag.objects.all(),
@@ -42,3 +49,6 @@ class FilterForm(forms.Form):
 
     def clean_tags(self):
         return list(self.cleaned_data['tags'].values_list('pk', flat=True))
+
+    def clean_location(self):
+        return self.cleaned_data['location'].pk
