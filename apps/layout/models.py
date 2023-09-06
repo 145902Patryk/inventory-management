@@ -18,8 +18,8 @@ class Location(models.Model):
         blank=True,
         null=True,
     )
-    x = models.IntegerField('Left')
-    y = models.IntegerField('Top')
+    x = models.FloatField('Left')
+    y = models.FloatField('Top')
 
     def __str__(self):
         return f'{self.layout.name} - {self.name}'

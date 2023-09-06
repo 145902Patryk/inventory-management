@@ -1,40 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block extra_css %}
-  <style>
-      .dot {
-          position: absolute;
-          background: red;
-          border-radius: 50%;
-          transform: translate(-50%, -50%);
-          z-index: 100;
-          border: solid 2px;
-          cursor: pointer;
-      }
-
-      .dot-placeholder {
-          position: absolute;
-          background: #FF000077;
-          border-radius: 50%;
-          transform: translate(-50%, -50%);
-      }
-
-      .img-div {
-          position: relative;
-      }
-
-      .img-div img {
-          cursor: crosshair;
-      }
-
-      .row div {
-          padding: 0;
-      }
-
-      .hideform {
-          display: none;
-      }
-  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css"/>
+  <link rel="stylesheet" href="{% static 'css/layout.min.css' %}">
 {% endblock extra_css %}
 {% block content %}
   <div class="container">
@@ -45,14 +13,18 @@
             <img src="{{ layout.image.url }}">
           </div>
         </div>
-        <div class="col-md-4">{{ layout.name }}</div>
+        <div class="col-md-4">
+          <ul class="list-group">
+            <li class="list-group-item"><h2>{{ layout.name }}</h2></li>
+
+            {% for x in layout.location_set.all %}
+              <li class="list-group-item list-group-item-primary">{{ x.name }}</li>
+            {% endfor %}
+          </ul>
+        </div>
       {% endfor %}
     </div>
   </div>
-  <!-- Button trigger modal -->
-  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalForm">
-    Launch demo modal
-  </button>
 
   <!-- Modal -->
   <div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="modalFormTitle"
@@ -66,43 +38,69 @@
           </button>
         </div>
         <div class="modal-body">
-          <form id="locationForm">
+          <form id="locationForm" action="{% url 'layout:add_location' %}" method="POST">
             {% csrf_token %}
             {{ form.as_p }}
           </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-primary" onclick="addLocation()">Save</button>
         </div>
       </div>
     </div>
   </div>
 {% endblock content %}
 {% block extra_js %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
   <script>
-      const dots = {{ js_obj|safe }};
+      const dots = Object({{ js_obj|safe }});
       const images = $('.img-div img');
-      $(document).on('click', '.dot', (ev) => {
-          const dot = $(ev.currentTarget)
-          console.log(dot.data())
+      const addLocation = () => {
+          $.ajax({
+              url: '{% url 'layout:add_location' %}',
+              type: 'POST',
+              data: $('#locationForm').serialize(),
+              success: (data) => {
+                  const imgDiv = $('#imagePreview' + data.layout)
+                  const dot = $('<div />', {
+                      'class': 'dot',
+                      css: {
+                          top: `${data.y}%`,
+                          left: `${data.x}%`,
+                          width: 20,
+                          height: 20,
+                      },
+                  });
+                  imgDiv.append(dot)
+                  dot.data({name: data.name, pk: data.pk})
+                  $('#modalForm').modal('hide')
+              },
+              error: (e) => {
+                  iziToast.error({
+                      title: 'Form error',
+                      message: e.responseText,
+                      timeout: 8000,
+                  })
+              }
+          })
+      }
+      $('#modalForm').on('hidden.bs.modal', () => {
+          $('.dot-placeholder').remove()
       })
       images.on('dragstart', (event) => {
           event.preventDefault();
       });
-      $('#modalForm').on('hidden.bs.modal', () => {
-          $('.dot-placeholder').remove()
-      })
       images.on('click', (ev) => {
           const img = $(ev.currentTarget)
           const o = img.offset()
-          const y = ev.pageY - o.top
-          const x = ev.pageX - o.left
+          const y = (ev.pageY - o.top) / img.height() * 100
+          const x = (ev.pageX - o.left) / img.width() * 100
           const dot = $('<div />', {
               'class': 'dot-placeholder',
               css: {
-                  top: y,
-                  left: x,
+                  top: `${y}%`,
+                  left: `${x}%`,
                   width: 20,
                   height: 20,
               },
@@ -110,28 +108,32 @@
           const imagePreview = img.parent()
           const pk = imagePreview.attr('id').replace('imagePreview', '')
           imagePreview.append(dot)
-          $('#id_x').attr('value', Math.round(x))
-          $('#id_y').attr('value', Math.round(y))
+          $('#id_x').attr('value', x)
+          $('#id_y').attr('value', y)
           $('#id_layout').val(pk).change()
           $('#modalForm').modal('show')
       });
       $(document).ready(() => {
           for (const [key, value] of Object.entries(dots)) {
-              const id = `#${key}`
+              const imgDiv = $('#' + key)
               value.forEach((el) => {
                   const dot = $('<div />', {
                       'class': 'dot',
                       css: {
-                          top: el.y,
-                          left: el.x,
+                          top: `${el.y}%`,
+                          left: `${el.x}%`,
                           width: 20,
                           height: 20,
                       },
                   });
-                  $(id).append(dot)
+                  imgDiv.append(dot)
                   dot.data({name: el.name, pk: el.pk})
               })
           }
+      })
+      $(document).on('click', '.dot', (ev) => {
+          const dot = $(ev.currentTarget)
+          console.log(dot.data())
       })
   </script>
 {% endblock extra_js %}
