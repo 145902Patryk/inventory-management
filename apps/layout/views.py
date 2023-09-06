@@ -1,8 +1,12 @@
-from django.http import HttpResponse, JsonResponse
+# Django
+from django.http import HttpResponse
+from django.http import JsonResponse
 from django.views.generic import ListView
 
+# Project
 from apps.layout.forms import LocationForm
-from apps.layout.models import Layout, Location
+from apps.layout.models import Layout
+from apps.layout.models import Location
 
 
 class MainLayoutView(ListView):

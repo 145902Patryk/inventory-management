@@ -1,11 +1,16 @@
+# Standard Library
 import string
 
+# Django
 from django import forms
 from django.forms.renderers import get_default_renderer
 from django.utils.safestring import mark_safe
 
-from .models import Tag
+# Project
 from apps.layout.models import Location
+
+# Local
+from .models import Tag
 
 
 def alphabet():

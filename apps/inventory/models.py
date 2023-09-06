@@ -1,6 +1,10 @@
-from ckeditor.fields import RichTextField
+# Django
 from django.db import models
 
+# 3rd-party
+from ckeditor.fields import RichTextField
+
+# Project
 from apps.layout.models import Location
 
 

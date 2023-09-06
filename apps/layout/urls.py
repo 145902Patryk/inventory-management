@@ -1,6 +1,9 @@
+# Django
 from django.urls import path
 
-from .views import MainLayoutView, add_location
+# Local
+from .views import MainLayoutView
+from .views import add_location
 
 app_name = 'layout'
 

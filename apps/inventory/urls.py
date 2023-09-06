@@ -1,6 +1,10 @@
+# Django
 from django.urls import path
 
-from .views import ItemsListView, set_filters, clear_filters
+# Local
+from .views import ItemsListView
+from .views import clear_filters
+from .views import set_filters
 
 app_name = 'inventory'
 
