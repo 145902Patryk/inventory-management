@@ -6,11 +6,9 @@ from django import forms
 from django.forms.renderers import get_default_renderer
 from django.utils.safestring import mark_safe
 
-# Project
-from apps.layout.models import Location
-
 # Local
-from .models import Tag
+from .models import Tag, Item
+from apps.layout.models import Location
 
 
 def alphabet():
@@ -56,4 +54,12 @@ class FilterForm(forms.Form):
         return list(self.cleaned_data['tags'].values_list('pk', flat=True))
 
     def clean_location(self):
-        return self.cleaned_data['location'].pk
+        loc = self.cleaned_data['location']
+        if loc:
+            return loc.pk
+
+
+class ItemForm(forms.ModelForm):
+    class Meta:
+        model = Item
+        fields = '__all__'

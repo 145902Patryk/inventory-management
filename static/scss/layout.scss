@@ -1,23 +1,34 @@
+$blue: #b8daff;
+$green: #adff2f;
+$red: #fc1414;
+
 .dot {
   position: absolute;
-  background: red;
+  background: $red;
   border-radius: 50%;
   transform: translate(-50%, -50%);
   z-index: 100;
   border: solid 2px;
   cursor: pointer;
+  width: 20px;
+  height: 20px;
+
+  &:hover {
+    background-color: $green;
+  }
 }
 
 .dot-placeholder {
-  position: absolute;
-  background: #FF000077;
-  border-radius: 50%;
+  background: $red;
+  opacity: 0.5;
   transform: translate(-50%, -50%);
+  border: none;
 }
 
 .img-div {
   position: relative;
-  img{
+
+  img {
     width: 100%;
     cursor: crosshair;
   }
@@ -25,4 +36,30 @@
 
 .hideform {
   display: none;
+}
+
+@keyframes highlighted-fade {
+  0% {
+    background-color: $green;
+  }
+  100% {
+    background-color: $blue
+  }
+}
+
+.highlighted {
+  animation: highlighted-fade 2s;
+  animation-timing-function: ease-out;
+  filter: brightness(1.1);
+}
+
+.green-bg {
+  background-color: $green;
+}
+
+.loc-li {
+  cursor: pointer;
+  &:hover {
+    background-color: $green;
+  }
 }

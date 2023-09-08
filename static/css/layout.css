@@ -1,18 +1,23 @@
 .dot {
   position: absolute;
-  background: red;
+  background: #fc1414;
   border-radius: 50%;
   transform: translate(-50%, -50%);
   z-index: 100;
   border: solid 2px;
   cursor: pointer;
+  width: 20px;
+  height: 20px;
+}
+.dot:hover {
+  background-color: #adff2f;
 }
 
 .dot-placeholder {
-  position: absolute;
-  background: #FF000077;
-  border-radius: 50%;
+  background: #fc1414;
+  opacity: 0.5;
   transform: translate(-50%, -50%);
+  border: none;
 }
 
 .img-div {
@@ -25,6 +30,31 @@
 
 .hideform {
   display: none;
+}
+
+@keyframes highlighted-fade {
+  0% {
+    background-color: #adff2f;
+  }
+  100% {
+    background-color: #b8daff;
+  }
+}
+.highlighted {
+  animation: highlighted-fade 2s;
+  animation-timing-function: ease-out;
+  filter: brightness(1.1);
+}
+
+.green-bg {
+  background-color: #adff2f;
+}
+
+.loc-li {
+  cursor: pointer;
+}
+.loc-li:hover {
+  background-color: #adff2f;
 }
 
 /*# sourceMappingURL=layout.css.map */

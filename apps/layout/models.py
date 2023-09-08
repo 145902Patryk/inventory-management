@@ -24,3 +24,6 @@ class Location(models.Model):
 
     def __str__(self):
         return f'{self.layout.name} - {self.name}'
+
+    class Meta:
+        ordering = ['layout', 'name']
