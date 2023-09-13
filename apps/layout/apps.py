@@ -2,6 +2,6 @@
 from django.apps import AppConfig
 
 
-class InventoryConfig(AppConfig):
+class LayoutConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'apps.inventory'
+    name = 'apps.layout'

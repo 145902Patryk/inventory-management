@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
+# Standard Library
 import os
 from pathlib import Path
 
@@ -37,8 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'ckeditor',
+    'django_select2',
     # 'apps.logger.apps.LoggerConfig',
     'apps.inventory.apps.InventoryConfig',
+    'apps.layout.apps.LayoutConfig',
 ]
 
 MIDDLEWARE = [
@@ -134,7 +138,15 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'public/uploads/')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 200,
+    },
+}
+
 try:
+    # Local
     from .settings_local import *  # noqa: F403, F401
 except ImportError:
     pass

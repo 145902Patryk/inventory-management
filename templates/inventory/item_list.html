@@ -2,7 +2,8 @@
 {% load static %}
 
 {% block extra_css %}
-  <link rel="stylesheet" href="{% static 'css/custom.min.css' %}">
+  {{ form.media.css }}
+  <link rel="stylesheet" href="{% static 'css/items.min.css' %}">
   <style>
       .img-div {
           background-image: url('{% static 'No-Image.png' %}')
@@ -10,17 +11,17 @@
   </style>
 {% endblock extra_css %}
 {% block content %}
-
   <div class="container">
-    <form method="post" action="{% url 'set_filters' %}">
+    <form method="post" action="{% url 'inventory:set_filters' %}">
       {% csrf_token %}
       <div class="row">
         <div class="col-md-6 mb-3">
           <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
           {{ form.name }}
         </div>
-        <div class="col-md-6 mb-3 auto-margin text-center">
-          {{ now }}
+        <div class="col-md-6 mb-3">
+          <label for="{{ form.location.id_for_label }}">{{ form.location.label }}</label>
+          {{ form.location }}
         </div>
       </div>
       <hr class="mb-4">
@@ -49,7 +50,8 @@
         </div>
         <div class="col-md-8 buttons">
           <button class="btn btn-primary" type="submit">Filter</button>
-          <a class="btn btn-secondary" role="button" href="{% url 'clear_filters' %}?next={% url 'items_list' %}">
+          <a class="btn btn-secondary" role="button"
+             href="{% url 'inventory:clear_filters' %}?next={% url 'inventory:items_list' %}">
             Clear filters</a>
         </div>
       </div>
@@ -69,20 +71,22 @@
           <div class="row">
             <div class="col-md-6" style="height: 90vh">
               <img alt="Full img" src="" class="imgpreview">
-
             </div>
             <div class="col-md-6">
-              tekst...
+              <div id="modalDescription"></div>
             </div>
           </div>
 
         </div>
       </div>
     </div>
+
   </div>
-  </div>
+
 {% endblock content %}
 {% block extra_js %}
+  {{ form.media.js }}
+
   <script>
       const inputs = $("#id_starts_with input")
       let dict = {}
@@ -106,7 +110,9 @@
           dict[input.attr('id')] = input.is(':checked')
       });
       $('.img-click').on('click', (e) => {
-          $('.imgpreview').attr('src', $(e.currentTarget).css('background-image').replace(/^url\(['"]?/, '').replace(/['"]?\)$/, ''));
+          const el = $(e.currentTarget)
+          $('#modalDescription').html(el.children('.for-modal')[0].innerHTML)
+          $('.imgpreview').attr('src', el.css('background-image').replace(/^url\(['"]?/, '').replace(/['"]?\)$/, ''));
           $('#imgModal').modal('show');
       });
   </script>

@@ -1,9 +1,18 @@
+# Django
 from django.urls import path
 
-from .views import ItemsListView, set_filters, clear_filters
+# Local
+from .views import ItemsListView, ItemCreateView
+from .views import clear_filters
+from .views import set_filters
+
+app_name = 'inventory'
+
 
 urlpatterns = [
     path('', ItemsListView.as_view(), name='items_list'),
     path('set-filter/', set_filters, name='set_filters'),
     path('clear-filter/', clear_filters, name='clear_filters'),
+    path('add-item/<int:location_pk>', ItemCreateView.as_view(), name='add_item_location'),
+    path('add-item/', ItemCreateView.as_view(), name='add_item'),
 ]

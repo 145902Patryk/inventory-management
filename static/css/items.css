@@ -1,0 +1,138 @@
+.item {
+  background-color: #563D7C26;
+  margin: 5px;
+  text-align: center;
+}
+.item .img-div {
+  height: 220px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+.item .img-div .row {
+  margin: 0;
+}
+.item .img-div .row .col-6 {
+  padding: 0;
+}
+.item .img-div .list-group {
+  line-height: 1px;
+}
+.item .img-div .list-group .list-group-item {
+  background: #f1f1f1b0;
+  padding: 10px;
+  font-weight: bold;
+}
+
+#id_starts_with {
+  display: flex;
+  user-select: none;
+  text-align: center;
+}
+#id_starts_with div {
+  width: 100%;
+}
+#id_starts_with input {
+  display: none;
+}
+#id_starts_with label {
+  cursor: pointer;
+}
+
+.selected {
+  font-weight: bold;
+  color: greenyellow;
+}
+
+.auto-margin {
+  margin: auto;
+}
+
+@media (max-width: 575px) {
+  .custom-radio {
+    padding-left: 0;
+  }
+}
+
+@media (max-width: 575px) {
+  .layouts {
+    text-align: center;
+    margin: 5px;
+  }
+}
+.layouts .btn {
+  line-height: 0;
+  font-size: 25px;
+  padding: 4px 12px;
+}
+
+.buttons {
+  text-align: right;
+}
+@media (max-width: 575px) {
+  .buttons {
+    text-align: center;
+    margin: 5px;
+  }
+}
+
+#imgModal {
+  overflow: hidden;
+}
+#imgModal .modal-dialog {
+  text-align: center;
+}
+@media (min-width: 576px) {
+  #imgModal .modal-dialog {
+    max-width: 90vw;
+  }
+}
+#imgModal .modal-dialog img {
+  width: 100%;
+  max-height: 100%;
+  position: absolute;
+  padding: 5px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+#imgModal .close {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 100;
+}
+
+.my-pagination {
+  text-align: center;
+}
+.my-pagination a, .my-pagination span {
+  padding: 5px;
+}
+
+.img-click {
+  cursor: pointer;
+}
+
+.mb-4 {
+  margin: 10px !important;
+}
+
+.item-col {
+  padding: 10px;
+}
+@media (max-width: 575px) {
+  .item-col {
+    margin-bottom: 40px;
+  }
+}
+
+#modalDescription {
+  margin: 20px;
+}
+
+.for-modal {
+  display: none;
+}
+
+/*# sourceMappingURL=items.css.map */

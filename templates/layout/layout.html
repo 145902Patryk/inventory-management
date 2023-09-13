@@ -1,0 +1,210 @@
+{% extends 'base.html' %}
+{% load static layout_extras %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/layout.min.css' %}">
+{% endblock extra_css %}
+{% block content %}
+  <div class="container">
+    <div class="row">
+      {% for layout in object_list %}
+        <div class="col-md-8">
+          <div id="imagePreview{{ layout.pk }}" class="img-div">
+            <img src="{{ layout.image.url }}">
+          </div>
+        </div>
+        <div class="col-md-4">
+          <ul class="list-group" id="locations{{ layout.pk }}">
+            <li class="list-group-item"><h2>{{ layout.name }}</h2></li>
+            {% for x in locs|get_item:layout.pk %}
+              <li data-pk="{{ x.pk }}" class="list-group-item list-group-item-primary loc-li">{{ x.name }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Modals -->
+  <div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="modalFormTitle"
+       aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add location</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="locationForm" action="{% url 'layout:add_location' %}" method="POST">
+            {% csrf_token %}
+            {{ location_form.as_p }}
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="addLocation()">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalLocation" tabindex="-1" role="dialog" aria-labelledby="modalLocationTitle"
+       aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="items-list"></div>
+          <div>
+            <a id="addItem" href="{% url 'inventory:add_item_location' location_pk=0 %}" class="btn btn-success">Add
+              new item</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+{% block extra_js %}
+  <script>
+      const dots = Object({{ js_obj|safe }});
+      const images = $('.img-div img');
+      const addLocation = () => {
+          $.ajax({
+              url: '{% url 'layout:add_location' %}',
+              type: 'POST',
+              data: $('#locationForm').serialize(),
+              success: (data) => {
+                  const imgDiv = $('#imagePreview' + data.layout)
+                  const locations = $('#locations' + data.layout)
+                  const dot = $('<div />', {
+                      'class': 'dot',
+                      css: {
+                          top: `${data.y}%`,
+                          left: `${data.x}%`,
+                      },
+                      title: data.name,
+                  });
+                  const cssClasses = 'list-group-item list-group-item-primary loc-li highlighted'
+                  const newSpan = '<span style="float: right">New</span>'
+                  imgDiv.append(dot)
+                  locations.append(`<li data-pk="${data.pk}" class="${cssClasses}">${data.name}${newSpan}</li>`)
+                  dot.attr('data-pk', data.pk)
+                  dot.attr('data-name', data.name)
+                  $('#modalForm').modal('hide')
+              },
+              error: (e) => {
+                  iziToast.error({
+                      title: 'Form error',
+                      message: e.responseText,
+                      timeout: 8000,
+                  })
+              }
+          })
+      }
+      $('#modalForm').on('hidden.bs.modal', () => {
+          $('.dot-placeholder').remove()
+      })
+      images.on('dragstart', (event) => {
+          event.preventDefault();
+      });
+      images.on('click', (ev) => {
+          const img = $(ev.currentTarget)
+          const o = img.offset()
+          const y = (ev.pageY - o.top) / img.height() * 100
+          const x = (ev.pageX - o.left) / img.width() * 100
+          const dot = $('<div />', {
+              'class': 'dot dot-placeholder',
+              css: {
+                  top: `${y}%`,
+                  left: `${x}%`,
+              },
+          });
+          const imagePreview = img.parent()
+          const pk = imagePreview.attr('id').replace('imagePreview', '')
+          imagePreview.append(dot)
+          $('#id_x').attr('value', x)
+          $('#id_y').attr('value', y)
+          $('#id_layout').val(pk).change()
+          $('#modalForm').modal('show')
+      });
+      $(document).ready(() => {
+          for (const [key, value] of Object.entries(dots)) {
+              const imgDiv = $('#' + key)
+              value.forEach((el) => {
+                  const dot = $('<div />', {
+                      'class': 'dot',
+                      css: {
+                          top: `${el.y}%`,
+                          left: `${el.x}%`,
+                      },
+                      title: el.name,
+                  });
+                  console.log()
+                  imgDiv.append(dot)
+                  dot.attr('data-pk', el.pk)
+                  dot.attr('data-name', el.name)
+              })
+          }
+      })
+      $(document).on('click', '.dot, .loc-li', (ev) => {
+          const el = $(ev.currentTarget)
+          const a = $('#addItem')
+          let href = a.attr('href').split('/')
+          href.pop()
+          href.push(el.data().pk)
+          a.attr('href', href.join('/'))
+          $.ajax({
+              url: '{% url 'layout:get_items' %}',
+              data: {
+                  pk: el.data().pk
+              },
+              success: (data) => {
+                  console.log(data)
+                  let modal = $('#modalLocation')
+                  modal.find('.modal-title')[0].innerHTML = data.loc
+                  let table = '<table class="table"><thead><tr><th>Item</th><th>Actions</th></tr></thead><tbody>'
+                  if (data.items.length) {
+                      data.items.forEach((el) =>{
+                          console.log(el)
+                          table+=`<tr><th scope="row">${el[1]}</th><td>${el[0]}</td></tr>`
+                      })
+                  } else {
+                      table+=`<tr><th scope="row">None</th><td></td></tr>`
+                  }
+                  table+='</tbody></table>'
+                  modal.find('.items-list')[0].innerHTML = table
+                  modal.modal('show')
+              },
+              error: (e) => {
+                  iziToast.error({
+                      title: 'Error',
+                      message: e.responseText,
+                      timeout: 8000,
+                  })
+              }
+          })
+      })
+      $(document).on('mouseenter', '.dot', (ev) => {
+          let dot = `.loc-li[data-pk="${$(ev.currentTarget).data().pk}"]`
+          $(dot).addClass('green-bg')
+      })
+      $(document).on('mouseleave', '.dot', (ev) => {
+          let dot = `.loc-li[data-pk="${$(ev.currentTarget).data().pk}"]`
+          $(dot).removeClass('green-bg')
+      })
+      $(document).on('mouseenter', '.loc-li', (ev) => {
+          let dot = `.dot[data-pk="${$(ev.currentTarget).data().pk}"]`
+          $(dot).addClass('green-bg')
+      })
+      $(document).on('mouseleave', '.loc-li', (ev) => {
+          let dot = `.dot[data-pk="${$(ev.currentTarget).data().pk}"]`
+          $(dot).removeClass('green-bg')
+      })
+  </script>
+{% endblock extra_js %}

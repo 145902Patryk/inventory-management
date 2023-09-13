@@ -4,6 +4,14 @@
     <div class="item">
       <div class="img-div img-click"
            {% if item.image %}style="background-image: url('{{ item.image.url }}')"{% endif %}>
+        <div class="for-modal">
+          <div>{{ item.description|safe }}</div>
+          {% if item.location %}
+            <p>Location: <b>{{ item.location }}</b></p>
+          {% endif %}
+          <p>Created: <b>{{ item.created_at }}</b></p>
+          <p>Last update: <b>{{ item.updated_at }}</b></p>
+        </div>
         <div class="row">
           <div class="col-6">
             <ul class="list-group list-group-flush">
@@ -12,7 +20,7 @@
               {% endfor %}
             </ul>
           </div>
-          <div class="col-6">tekst...</div>
+          <div class="col-6"></div>
         </div>
 
       </div>

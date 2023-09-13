@@ -1,4 +1,11 @@
+# Django
 from django.db import models
+
+# 3rd-party
+from ckeditor.fields import RichTextField
+
+# Project
+from apps.layout.models import Location
 
 
 class Tag(models.Model):
@@ -13,10 +20,17 @@ class Tag(models.Model):
 
 class Item(models.Model):
     name = models.CharField('Name', max_length=255)
-    description = models.TextField('Description', blank=True)
+    location = models.ForeignKey(
+        Location,
+        on_delete=models.SET_NULL,
+        verbose_name='Location',
+        blank=True,
+        null=True,
+    )
     image = models.ImageField('Image', blank=True, null=True)
-    quantity = models.IntegerField('Quantity', default=1)
     tags = models.ManyToManyField(Tag, verbose_name='Tags')
+    description = RichTextField('Description', blank=True)
+    quantity = models.IntegerField('Quantity', default=1)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

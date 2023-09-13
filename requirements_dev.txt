@@ -1,0 +1,10 @@
+-r requirements.txt
+flake8==6.1.0
+flake8-blind-except==0.2.1
+flake8-commas==2.1.0
+flake8-docstrings==1.7.0
+flake8-isort==6.0.0
+flake8-pep3101==2.0.0
+flake8-quotes==3.3.2
+flake8-string-format==0.3.0
+isort==5.12.0
