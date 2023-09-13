@@ -5,15 +5,23 @@ import string
 from django import forms
 from django.forms.renderers import get_default_renderer
 from django.utils.safestring import mark_safe
+from django_select2.forms import Select2MultipleWidget, Select2Widget
 
 # Local
 from .models import Tag, Item
 from apps.layout.models import Location
+from .utils import set_bootstrap_class
 
 
 def alphabet():
     characters = ((a, a) for a in string.ascii_uppercase)
     return characters
+
+
+class TagsWidget(Select2MultipleWidget):
+    search_fields = [
+        'name__icontains',
+    ]
 
 
 class RowCheckboxSelectMultiple(forms.CheckboxSelectMultiple):
@@ -31,24 +39,28 @@ class FilterForm(forms.Form):
     name = forms.CharField(
         label='Name/Description',
         required=False,
-        widget=forms.TextInput(attrs={'class': 'form-control'})
     )
     location = forms.ModelChoiceField(
         label='Location',
         required=False,
         queryset=Location.objects.all(),
-        widget=forms.Select(attrs={'class': 'form-control'})
+        widget=Select2Widget,
     )
     tags = forms.ModelMultipleChoiceField(
         required=False,
         queryset=Tag.objects.all(),
-        widget=RowCheckboxSelectMultiple
+        widget=RowCheckboxSelectMultiple,
     )
     starts_with = forms.ChoiceField(
         required=False,
         choices=alphabet(),
         widget=forms.RadioSelect,
     )
+
+    def __init__(self, *args, **kwargs):
+        """Add bootstrap classes to all fields."""
+        super().__init__(*args, **kwargs)
+        set_bootstrap_class(self.fields)
 
     def clean_tags(self):
         return list(self.cleaned_data['tags'].values_list('pk', flat=True))
@@ -60,6 +72,21 @@ class FilterForm(forms.Form):
 
 
 class ItemForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        """Add bootstrap classes to all fields."""
+        super().__init__(*args, **kwargs)
+        initial = kwargs.get('initial', {})
+        pk = initial.get('location_pk')
+        if isinstance(pk, int):
+            self.fields['location'].initial = pk
+            self.fields['location'].disabled = True
+        set_bootstrap_class(self.fields)
+
     class Meta:
         model = Item
         fields = '__all__'
+        widgets = {
+            'location': Select2Widget,
+            'tags': TagsWidget
+        }

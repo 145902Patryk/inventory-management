@@ -3,7 +3,6 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from django.views.generic import ListView
 
-from apps.inventory.forms import ItemForm
 # Project
 from apps.layout.forms import LocationForm
 from apps.layout.models import Layout
@@ -25,7 +24,6 @@ class MainLayoutView(ListView):
             js_obj[f'imagePreview{layout.pk}'] = arr
         ctx['js_obj'] = js_obj
         ctx['location_form'] = LocationForm()
-        ctx['item_form'] = ItemForm()
         ctx['locs'] = locations
         return ctx
 

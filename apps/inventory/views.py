@@ -1,15 +1,16 @@
 # Standard Library
 import json
 
+from django.contrib import messages
 # Django
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.utils import timezone
-from django.views.generic import ListView
+from django.views.generic import ListView, CreateView
 
 # Local
-from .forms import FilterForm
+from .forms import FilterForm, ItemForm
 from .models import Item
 from .utils import filter_to_item_query
 
@@ -38,6 +39,20 @@ class ItemsListView(ListView):
         context['now'] = timezone.now()
         context['form'] = FilterForm(self.filters)
         return context
+
+
+class ItemCreateView(CreateView):
+    model = Item
+    success_url = reverse_lazy('layout:main')
+    form_class = ItemForm
+
+    def get_initial(self):
+        return {'location_pk': self.kwargs.get('location_pk')}
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.add_message(self.request, messages.SUCCESS, f'Item "{self.object.name}" created')
+        return response
 
 
 def set_filters(request):

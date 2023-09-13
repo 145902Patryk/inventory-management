@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ckeditor',
+    'django_select2',
     # 'apps.logger.apps.LoggerConfig',
     'apps.inventory.apps.InventoryConfig',
     'apps.layout.apps.LayoutConfig',
@@ -140,7 +141,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': 'full',
-        'width': 900,
         'height': 200,
     },
 }

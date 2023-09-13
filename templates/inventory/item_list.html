@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block extra_css %}
+  {{ form.media.css }}
   <link rel="stylesheet" href="{% static 'css/items.min.css' %}">
   <style>
       .img-div {
@@ -18,7 +19,7 @@
           <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
           {{ form.name }}
         </div>
-        <div class="col-md-6 mb-3 auto-margin text-center">
+        <div class="col-md-6 mb-3">
           <label for="{{ form.location.id_for_label }}">{{ form.location.label }}</label>
           {{ form.location }}
         </div>
@@ -84,6 +85,8 @@
 
 {% endblock content %}
 {% block extra_js %}
+  {{ form.media.js }}
+
   <script>
       const inputs = $("#id_starts_with input")
       let dict = {}

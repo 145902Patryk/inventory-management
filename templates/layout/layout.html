@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% load static layout_extras %}
 {% block extra_css %}
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css"/>
   <link rel="stylesheet" href="{% static 'css/layout.min.css' %}">
 {% endblock extra_css %}
 {% block content %}
@@ -52,7 +51,7 @@
 
   <div class="modal fade" id="modalLocation" tabindex="-1" role="dialog" aria-labelledby="modalLocationTitle"
        aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title"></h5>
@@ -61,14 +60,17 @@
           </button>
         </div>
         <div class="modal-body">
-
+          <div class="items-list"></div>
+          <div>
+            <a id="addItem" href="{% url 'inventory:add_item_location' location_pk=0 %}" class="btn btn-success">Add
+              new item</a>
+          </div>
         </div>
       </div>
     </div>
   </div>
 {% endblock content %}
 {% block extra_js %}
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
   <script>
       const dots = Object({{ js_obj|safe }});
       const images = $('.img-div img');
@@ -152,7 +154,11 @@
       })
       $(document).on('click', '.dot, .loc-li', (ev) => {
           const el = $(ev.currentTarget)
-          console.log(el.data())
+          const a = $('#addItem')
+          let href = a.attr('href').split('/')
+          href.pop()
+          href.push(el.data().pk)
+          a.attr('href', href.join('/'))
           $.ajax({
               url: '{% url 'layout:get_items' %}',
               data: {
@@ -162,11 +168,17 @@
                   console.log(data)
                   let modal = $('#modalLocation')
                   modal.find('.modal-title')[0].innerHTML = data.loc
-                  if (data.items) {
-                      modal.find('.modal-body')[0].innerHTML = data.items
+                  let table = '<table class="table"><thead><tr><th>Item</th><th>Actions</th></tr></thead><tbody>'
+                  if (data.items.length) {
+                      data.items.forEach((el) =>{
+                          console.log(el)
+                          table+=`<tr><th scope="row">${el[1]}</th><td>${el[0]}</td></tr>`
+                      })
                   } else {
-                      modal.find('.modal-body')[0].innerHTML = 'None'
+                      table+=`<tr><th scope="row">None</th><td></td></tr>`
                   }
+                  table+='</tbody></table>'
+                  modal.find('.items-list')[0].innerHTML = table
                   modal.modal('show')
               },
               error: (e) => {
