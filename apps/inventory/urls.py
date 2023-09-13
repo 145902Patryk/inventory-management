@@ -2,7 +2,8 @@
 from django.urls import path
 
 # Local
-from .views import ItemsListView, ItemCreateView
+from .views import ItemCreateView
+from .views import ItemsListView
 from .views import clear_filters
 from .views import set_filters
 

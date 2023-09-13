@@ -2,8 +2,9 @@
 from django.urls import path
 
 # Local
-from .views import MainLayoutView, items_list_for_location
+from .views import MainLayoutView
 from .views import add_location
+from .views import items_list_for_location
 
 app_name = 'layout'
 
