@@ -170,14 +170,16 @@
                   modal.find('.modal-title')[0].innerHTML = data.loc
                   let table = '<table class="table"><thead><tr><th>Item</th><th>Actions</th></tr></thead><tbody>'
                   if (data.items.length) {
-                      data.items.forEach((el) =>{
-                          console.log(el)
-                          table+=`<tr><th scope="row">${el[1]}</th><td>${el[0]}</td></tr>`
+                      data.items.forEach((el) => {
+                          console.log(el) // todo: add existing items to location
+                          let edit = '<button class="btn btn-warning">Edit</button>'
+                          let del = '<button class="btn btn-danger">Delete</button>'
+                          table += `<tr><th scope="row">${el[1]}</th><td><p>${edit} ${del}</p></td></tr>`
                       })
                   } else {
-                      table+=`<tr><th scope="row">None</th><td></td></tr>`
+                      table += `<tr><th scope="row">None</th><td></td></tr>`
                   }
-                  table+='</tbody></table>'
+                  table += '</tbody></table>'
                   modal.find('.items-list')[0].innerHTML = table
                   modal.modal('show')
               },
