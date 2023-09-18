@@ -172,9 +172,10 @@
                   if (data.items.length) {
                       data.items.forEach((el) => {
                           console.log(el) // todo: add existing items to location
-                          let edit = '<button class="btn btn-warning">Edit</button>'
-                          let del = '<button class="btn btn-danger">Delete</button>'
+                          let edit = '<a href="{% url 'inventory:edit_item' 0 %}" class="btn btn-warning">Edit</a>'
+                          let del = '<a href="{% url 'inventory:edit_item' 0 %}" class="btn btn-danger">Delete</a>'
                           table += `<tr><th scope="row">${el[1]}</th><td><p>${edit} ${del}</p></td></tr>`
+                          table = table.replaceAll('0', el[0])
                       })
                   } else {
                       table += `<tr><th scope="row">None</th><td></td></tr>`

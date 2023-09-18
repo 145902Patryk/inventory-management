@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.utils import timezone
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView
 from django.views.generic import ListView
 
 # Local
@@ -55,6 +55,12 @@ class ItemCreateView(CreateView):
         response = super().form_valid(form)
         messages.add_message(self.request, messages.SUCCESS, f'Item "{self.object.name}" created')
         return response
+
+
+class ItemUpdateView(UpdateView):
+    model = Item
+    success_url = reverse_lazy('layout:main')
+    form_class = ItemForm
 
 
 def set_filters(request):
