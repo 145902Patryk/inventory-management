@@ -52,15 +52,18 @@ class ItemCreateView(CreateView):
         return {'location_pk': self.kwargs.get('location_pk')}
 
     def form_valid(self, form):
-        response = super().form_valid(form)
         messages.add_message(self.request, messages.SUCCESS, f'Item "{self.object.name}" created')
-        return response
+        return super().form_valid(form)
 
 
 class ItemUpdateView(UpdateView):
     model = Item
     success_url = reverse_lazy('layout:main')
     form_class = ItemForm
+
+    def form_valid(self, form):
+        messages.add_message(self.request, messages.SUCCESS, f'Item updated')
+        return super().form_valid(form)
 
 
 def set_filters(request):
