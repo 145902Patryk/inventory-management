@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.utils import timezone
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView
 
 # Local
@@ -52,8 +52,9 @@ class ItemCreateView(CreateView):
         return {'location_pk': self.kwargs.get('location_pk')}
 
     def form_valid(self, form):
+        response = super().form_valid(form)
         messages.add_message(self.request, messages.SUCCESS, f'Item "{self.object.name}" created')
-        return super().form_valid(form)
+        return response
 
 
 class ItemUpdateView(UpdateView):
@@ -62,8 +63,22 @@ class ItemUpdateView(UpdateView):
     form_class = ItemForm
 
     def form_valid(self, form):
+        response = super().form_valid(form)
         messages.add_message(self.request, messages.SUCCESS, f'Item updated')
-        return super().form_valid(form)
+        return response
+
+
+class ItemDeleteView(DeleteView):
+    model = Item
+    success_url = reverse_lazy('layout:main')
+
+    def form_valid(self, form):
+        success_url = self.get_success_url()
+        self.object.deleted = True
+        self.object.location = None
+        self.object.save()
+        messages.add_message(self.request, messages.SUCCESS, f'Item deleted')
+        return HttpResponseRedirect(success_url)
 
 
 def set_filters(request):

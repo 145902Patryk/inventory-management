@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container">
+    <form action="" method="post">
+      {% csrf_token %}
+      <p>Are you sure you want to delete {{ object }}?</p>
+      <p><input type="submit" class="btn btn-danger" value="Confirm" name="confirm_delete"/></p>
+    </form>
+    <p>
+      <button class="btn btn-primary" onclick="history.back()">Cancel</button>
+    </p>
+  </div>
+{% endblock content %}
