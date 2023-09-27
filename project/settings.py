@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     # 'apps.logger.apps.LoggerConfig',
     'apps.inventory.apps.InventoryConfig',
     'apps.layout.apps.LayoutConfig',
+    'apps.logger.apps.LoggerConfig',
 ]
 
 MIDDLEWARE = [
@@ -53,7 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'apps.inventory.middleware.LogsMiddleware',
+    'apps.logger.middleware.LogsMiddleware',
 ]
 
 ROOT_URLCONF = 'project.urls'
