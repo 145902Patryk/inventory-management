@@ -8,6 +8,11 @@ from ckeditor.fields import RichTextField
 from apps.layout.models import Location
 
 
+class VisibleManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(deleted=False)
+
+
 class Tag(models.Model):
     name = models.CharField('Name', max_length=255)
 
@@ -33,9 +38,13 @@ class Item(models.Model):
     quantity = models.IntegerField('Quantity', default=1)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    deleted = models.BooleanField(default=False)
+
+    objects = VisibleManager()
+    all_objects = models.Manager()
 
     def __str__(self):
-        return f'{self.name} ({self.quantity})'
+        return f'{self.name}'
 
     class Meta:
         ordering = ['name']

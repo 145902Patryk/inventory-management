@@ -92,6 +92,7 @@ class ItemForm(forms.ModelForm):
     class Meta:
         model = Item
         fields = '__all__'
+        exclude = ['deleted']
         widgets = {
             'location': Select2Widget,
             'tags': TagsWidget,

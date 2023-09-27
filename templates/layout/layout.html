@@ -62,8 +62,8 @@
         <div class="modal-body">
           <div class="items-list"></div>
           <div>
-            <a id="addItem" href="{% url 'inventory:add_item_location' location_pk=0 %}" class="btn btn-success">Add
-              new item</a>
+            <a id="addItem" href="{% url 'inventory:add_item_location' location_pk=0 %}" class="btn btn-success">
+              Add new item</a>
           </div>
         </div>
       </div>
@@ -156,8 +156,7 @@
           const el = $(ev.currentTarget)
           const a = $('#addItem')
           let href = a.attr('href').split('/')
-          href.pop()
-          href.push(el.data().pk)
+          href[href.length-2] = el.data().pk
           a.attr('href', href.join('/'))
           $.ajax({
               url: '{% url 'layout:get_items' %}',
@@ -173,7 +172,7 @@
                       data.items.forEach((el) => {
                           console.log(el) // todo: add existing items to location
                           let edit = '<a href="{% url 'inventory:edit_item' 0 %}" class="btn btn-warning">Edit</a>'
-                          let del = '<a href="{% url 'inventory:edit_item' 0 %}" class="btn btn-danger">Delete</a>'
+                          let del = '<a href="{% url 'inventory:delete_item' 0 %}" class="btn btn-danger">Delete</a>'
                           table += `<tr><th scope="row">${el[1]}</th><td><p>${edit} ${del}</p></td></tr>`
                           table = table.replaceAll('0', el[0])
                       })
