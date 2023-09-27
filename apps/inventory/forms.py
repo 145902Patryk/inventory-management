@@ -5,11 +5,17 @@ import string
 from django import forms
 from django.forms.renderers import get_default_renderer
 from django.utils.safestring import mark_safe
-from django_select2.forms import Select2MultipleWidget, Select2Widget
+
+# 3rd-party
+from django_select2.forms import Select2MultipleWidget
+from django_select2.forms import Select2Widget
+
+# Project
+from apps.layout.models import Location
 
 # Local
-from .models import Tag, Item
-from apps.layout.models import Location
+from .models import Item
+from .models import Tag
 from .utils import set_bootstrap_class
 
 
@@ -88,5 +94,5 @@ class ItemForm(forms.ModelForm):
         fields = '__all__'
         widgets = {
             'location': Select2Widget,
-            'tags': TagsWidget
+            'tags': TagsWidget,
         }

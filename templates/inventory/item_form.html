@@ -9,7 +9,11 @@
     <form method="post" enctype="multipart/form-data">
       {% csrf_token %}
       {{ form.as_p }}
-      <input type="submit" class="btn btn-success" value="Add">
+      {% if object %}
+        <input type="submit" class="btn btn-warning" value="Update">
+      {% else %}
+        <input type="submit" class="btn btn-success" value="Add">
+      {% endif %}
     </form>
   </div>
 {% endblock content %}

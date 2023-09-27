@@ -1,7 +1,7 @@
 [flake8]
 max-line-length = 99
 exclude =   migrations,
-            settings_local_pipelines.py,
+            manage.py,
             celery_local.py,
-            settings_local.py,
+            settings_local.example.py,
             settings_local.py,

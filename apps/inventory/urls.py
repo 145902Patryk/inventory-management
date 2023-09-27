@@ -2,7 +2,8 @@
 from django.urls import path
 
 # Local
-from .views import ItemsListView, ItemCreateView
+from .views import ItemCreateView, ItemUpdateView
+from .views import ItemsListView
 from .views import clear_filters
 from .views import set_filters
 
@@ -15,4 +16,5 @@ urlpatterns = [
     path('clear-filter/', clear_filters, name='clear_filters'),
     path('add-item/<int:location_pk>', ItemCreateView.as_view(), name='add_item_location'),
     path('add-item/', ItemCreateView.as_view(), name='add_item'),
+    path('edit-item/<pk>', ItemUpdateView.as_view(), name='edit_item')
 ]
