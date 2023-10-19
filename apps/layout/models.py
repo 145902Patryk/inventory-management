@@ -23,7 +23,9 @@ class Location(models.Model):
     y = models.FloatField('Top')
 
     def __str__(self):
-        return f'{self.layout.name} - {self.name}'
+        if self.layout:
+            return f'{self.layout.name} - {self.name}'
+        return f'None - {self.name}'
 
     class Meta:
         ordering = ['layout', 'name']
