@@ -97,3 +97,17 @@ def clear_filters(request):
     except KeyError:
         print('no filters')
     return HttpResponseRedirect(url)
+
+
+def remove_item(request):
+    if request.method == 'GET':
+        pk = request.GET.get('pk')
+        try:
+            item = Item.objects.get(pk=pk)
+            location_str = item.location.name
+            item.location = None
+            item.save()
+            return HttpResponse(f'Item <b>{item}</b> removed from <b>{location_str}</b>', status=200)
+        except Item.DoesNotExist:
+            return HttpResponse('Item does not exist.', status=404)
+    return HttpResponse(status=400)

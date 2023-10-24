@@ -1,10 +1,12 @@
 # Django
 from django.http import HttpResponse
 from django.http import JsonResponse
+from django.urls import reverse_lazy
 from django.views.generic import ListView
+from django.views.generic.edit import FormView
 
 # Project
-from apps.layout.forms import LocationForm
+from apps.layout.forms import LocationForm, SetItemForm
 from apps.layout.models import Layout
 from apps.layout.models import Location
 
@@ -28,12 +30,22 @@ class MainLayoutView(ListView):
         return ctx
 
 
+class LocationSetItems(FormView):
+    template_name = 'layout/item_set_form.html'
+    form_class = SetItemForm
+    success_url = reverse_lazy('layout:main')
+
+    def form_valid(self, form):
+        location = Location.objects.get(pk=self.kwargs['pk'])
+        form.cleaned_data['items'].update(location=location)
+        return super().form_valid(form)
+
+
 def add_location(request):
     """Set amount of items per page."""
     if request.method == 'POST':
         form = LocationForm(request.POST)
         if form.is_valid():
-            print(form.cleaned_data)
             loc = Location.objects.create(**form.cleaned_data)
             dot = {
                 'x': loc.x,
