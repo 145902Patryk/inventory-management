@@ -7,8 +7,10 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.utils import timezone
-from django.views.generic import CreateView, UpdateView, DeleteView
+from django.views.generic import CreateView
+from django.views.generic import DeleteView
 from django.views.generic import ListView
+from django.views.generic import UpdateView
 
 # Local
 from .forms import FilterForm

@@ -1,9 +1,11 @@
 # Django
 from django import forms
+
+# 3rd-party
 from django_select2.forms import Select2MultipleWidget
 
-from apps.inventory.models import Item
 # Project
+from apps.inventory.models import Item
 from apps.layout.models import Location
 
 

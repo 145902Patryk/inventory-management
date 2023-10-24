@@ -6,7 +6,8 @@ from django.views.generic import ListView
 from django.views.generic.edit import FormView
 
 # Project
-from apps.layout.forms import LocationForm, SetItemForm
+from apps.layout.forms import LocationForm
+from apps.layout.forms import SetItemForm
 from apps.layout.models import Layout
 from apps.layout.models import Location
 

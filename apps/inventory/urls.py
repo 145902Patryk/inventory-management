@@ -2,9 +2,12 @@
 from django.urls import path
 
 # Local
-from .views import ItemCreateView, ItemUpdateView, ItemDeleteView, remove_item
+from .views import ItemCreateView
+from .views import ItemDeleteView
 from .views import ItemsListView
+from .views import ItemUpdateView
 from .views import clear_filters
+from .views import remove_item
 from .views import set_filters
 
 app_name = 'inventory'

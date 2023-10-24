@@ -1,10 +1,13 @@
+# Standard Library
 import time
 
+# Django
 from django.conf import settings
-from django.utils.deprecation import MiddlewareMixin
 from django.utils import dateformat
 from django.utils import timezone
+from django.utils.deprecation import MiddlewareMixin
 
+# Project
 from apps.logger.models import Log
 
 

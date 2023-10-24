@@ -2,7 +2,8 @@
 from django.urls import path
 
 # Local
-from .views import MainLayoutView, LocationSetItems
+from .views import LocationSetItems
+from .views import MainLayoutView
 from .views import add_location
 from .views import items_list_for_location
 
