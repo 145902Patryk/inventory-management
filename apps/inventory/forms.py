@@ -1,3 +1,5 @@
+"""Inventory forms."""
+
 # Standard Library
 import string
 
@@ -89,7 +91,7 @@ class ItemForm(forms.ModelForm):
             self.fields['location'].disabled = True
         set_bootstrap_class(self.fields)
 
-    class Meta:
+    class Meta:  # noqa: D106
         model = Item
         fields = '__all__'
         exclude = ['deleted']

@@ -1,3 +1,4 @@
+"""Inventory views."""
 # Standard Library
 import json
 
@@ -35,8 +36,8 @@ class ItemsListView(ListView):
         return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
-        query_filter, q_filter = filter_to_item_query(self.filters)
-        return self.model.objects.filter(*q_filter, **query_filter).distinct().prefetch_related('tags')
+        query, q_filter = filter_to_item_query(self.filters)
+        return self.model.objects.filter(*q_filter, **query).distinct().prefetch_related('tags')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -66,7 +67,7 @@ class ItemUpdateView(UpdateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        messages.add_message(self.request, messages.SUCCESS, f'Item updated')
+        messages.add_message(self.request, messages.SUCCESS, 'Item updated')
         return response
 
 

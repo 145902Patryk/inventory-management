@@ -1,3 +1,4 @@
+"""Inventory models."""
 # Django
 from django.db import models
 
@@ -19,7 +20,7 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 
-    class Meta:
+    class Meta:  # noqa: D106
         ordering = ['name']
 
 
@@ -46,5 +47,5 @@ class Item(models.Model):
     def __str__(self):
         return f'{self.name}'
 
-    class Meta:
+    class Meta:  # noqa: D106
         ordering = ['name']

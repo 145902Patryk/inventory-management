@@ -1,3 +1,4 @@
+"""Layout views."""
 # Django
 from django.http import HttpResponse
 from django.http import JsonResponse
@@ -64,6 +65,7 @@ def add_location(request):
 
 
 def items_list_for_location(request):
+    """Return list of items for selected location."""
     if request.method == 'GET':
         pk = request.GET.get('pk')
         if pk:

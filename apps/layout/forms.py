@@ -1,3 +1,4 @@
+"""Layout forms."""
 # Django
 from django import forms
 
@@ -10,7 +11,7 @@ from apps.layout.models import Location
 
 
 class LocationForm(forms.ModelForm):
-    class Meta:
+    class Meta:  # noqa: D106
         model = Location
         fields = '__all__'
         widgets = {
