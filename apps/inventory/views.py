@@ -80,7 +80,7 @@ class ItemDeleteView(DeleteView):
         self.object.deleted = True
         self.object.location = None
         self.object.save()
-        messages.add_message(self.request, messages.SUCCESS, f'Item deleted')
+        messages.add_message(self.request, messages.SUCCESS, 'Item deleted')
         return HttpResponseRedirect(success_url)
 
 
@@ -107,10 +107,10 @@ def remove_item(request):
         pk = request.GET.get('pk')
         try:
             item = Item.objects.get(pk=pk)
-            location_str = item.location.name
+            loc_str = item.location.name
             item.location = None
             item.save()
-            return HttpResponse(f'Item <b>{item}</b> removed from <b>{location_str}</b>', status=200)
+            return HttpResponse(f'Item <b>{item}</b> removed from <b>{loc_str}</b>', status=200)
         except Item.DoesNotExist:
             return HttpResponse('Item does not exist.', status=404)
     return HttpResponse(status=400)
