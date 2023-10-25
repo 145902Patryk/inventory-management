@@ -1,3 +1,4 @@
+"""Inventory views."""
 # Standard Library
 import json
 
@@ -7,8 +8,10 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.utils import timezone
-from django.views.generic import CreateView, UpdateView, DeleteView
+from django.views.generic import CreateView
+from django.views.generic import DeleteView
 from django.views.generic import ListView
+from django.views.generic import UpdateView
 
 # Local
 from .forms import FilterForm
@@ -33,8 +36,8 @@ class ItemsListView(ListView):
         return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
-        query_filter, q_filter = filter_to_item_query(self.filters)
-        return self.model.objects.filter(*q_filter, **query_filter).distinct().prefetch_related('tags')
+        query, q_filter = filter_to_item_query(self.filters)
+        return self.model.objects.filter(*q_filter, **query).distinct().prefetch_related('tags')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -64,7 +67,7 @@ class ItemUpdateView(UpdateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        messages.add_message(self.request, messages.SUCCESS, f'Item updated')
+        messages.add_message(self.request, messages.SUCCESS, 'Item updated')
         return response
 
 
@@ -77,7 +80,7 @@ class ItemDeleteView(DeleteView):
         self.object.deleted = True
         self.object.location = None
         self.object.save()
-        messages.add_message(self.request, messages.SUCCESS, f'Item deleted')
+        messages.add_message(self.request, messages.SUCCESS, 'Item deleted')
         return HttpResponseRedirect(success_url)
 
 
@@ -97,3 +100,17 @@ def clear_filters(request):
     except KeyError:
         print('no filters')
     return HttpResponseRedirect(url)
+
+
+def remove_item(request):
+    if request.method == 'GET':
+        pk = request.GET.get('pk')
+        try:
+            item = Item.objects.get(pk=pk)
+            loc_str = item.location.name
+            item.location = None
+            item.save()
+            return HttpResponse(f'Item <b>{item}</b> removed from <b>{loc_str}</b>', status=200)
+        except Item.DoesNotExist:
+            return HttpResponse('Item does not exist.', status=404)
+    return HttpResponse(status=400)

@@ -1,3 +1,4 @@
+"""Layout models."""
 # Django
 from django.db import models
 
@@ -23,7 +24,9 @@ class Location(models.Model):
     y = models.FloatField('Top')
 
     def __str__(self):
-        return f'{self.layout.name} - {self.name}'
+        if self.layout:
+            return f'{self.layout.name} - {self.name}'
+        return f'None - {self.name}'
 
-    class Meta:
+    class Meta:  # noqa: D106
         ordering = ['layout', 'name']

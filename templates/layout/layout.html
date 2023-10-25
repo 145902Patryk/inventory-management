@@ -64,6 +64,10 @@
           <div>
             <a id="addItem" href="{% url 'inventory:add_item_location' location_pk=0 %}" class="btn btn-success">
               Add new item</a>
+            <a id="setItem" href="{% url 'layout:set_item' 0 %}" class="btn btn-success"
+               title="List of items without location">
+              Add existing item
+            </a>
           </div>
         </div>
       </div>
@@ -101,6 +105,30 @@
               error: (e) => {
                   iziToast.error({
                       title: 'Form error',
+                      message: e.responseText,
+                      timeout: 8000,
+                  })
+              }
+          })
+      }
+      const removeItem = (pk, e) => {
+          let row = $(e.currentTarget).parents('tr')
+          $.ajax({
+              url: '{% url 'inventory:remove_item' %}',
+              data: {
+                  pk: pk
+              },
+              success: (data) => {
+                  row.remove()
+                  iziToast.success({
+                      title: 'Success',
+                      message: data,
+                      timeout: 8000,
+                  })
+              },
+              error: (e) => {
+                  iziToast.error({
+                      title: 'Error',
                       message: e.responseText,
                       timeout: 8000,
                   })
@@ -154,10 +182,14 @@
       })
       $(document).on('click', '.dot, .loc-li', (ev) => {
           const el = $(ev.currentTarget)
-          const a = $('#addItem')
-          let href = a.attr('href').split('/')
-          href[href.length-2] = el.data().pk
-          a.attr('href', href.join('/'))
+          const $addItem = $('#addItem')
+          const $setItem = $('#setItem')
+          let hrefAdd = $addItem.attr('href').split('/')
+          hrefAdd[hrefAdd.length - 2] = el.data().pk
+          $addItem.attr('href', hrefAdd.join('/'))
+          let hrefSet = $setItem.attr('href').split('/')
+          hrefSet[hrefSet.length - 2] = el.data().pk
+          $setItem.attr('href', hrefSet.join('/'))
           $.ajax({
               url: '{% url 'layout:get_items' %}',
               data: {
@@ -170,10 +202,10 @@
                   let table = '<table class="table"><thead><tr><th>Item</th><th>Actions</th></tr></thead><tbody>'
                   if (data.items.length) {
                       data.items.forEach((el) => {
-                          console.log(el) // todo: add existing items to location
                           let edit = '<a href="{% url 'inventory:edit_item' 0 %}" class="btn btn-warning">Edit</a>'
+                          let remove = '<button onclick="removeItem(0, event)" class="btn btn-secondary">Remove</button>'
                           let del = '<a href="{% url 'inventory:delete_item' 0 %}" class="btn btn-danger">Delete</a>'
-                          table += `<tr><th scope="row">${el[1]}</th><td><p>${edit} ${del}</p></td></tr>`
+                          table += `<tr><th scope="row">${el[1]}</th><td><p>${edit} ${remove} ${del}</p></td></tr>`
                           table = table.replaceAll('0', el[0])
                       })
                   } else {

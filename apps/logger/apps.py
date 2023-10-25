@@ -1,8 +1,7 @@
-"""Layout apps."""
 # Django
 from django.apps import AppConfig
 
 
-class LayoutConfig(AppConfig):
+class LoggerConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'apps.layout'
+    name = 'apps.logger'
