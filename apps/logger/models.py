@@ -6,6 +6,7 @@ class Log(models.Model):
     created = models.DateTimeField()
     time = models.CharField(max_length=255)
     path = models.CharField(max_length=255)
+    user = models.CharField(max_length=255)
     status = models.CharField(max_length=255)
     response = models.JSONField(blank=True)
 

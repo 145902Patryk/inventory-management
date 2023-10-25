@@ -11,14 +11,6 @@ from django.utils.deprecation import MiddlewareMixin
 from apps.logger.models import Log
 
 
-def remove_keys(my_dict, val):
-    new_dict = my_dict
-    for k, v in my_dict.items():
-        if val in k:
-            del new_dict[k]
-    return new_dict
-
-
 class LogsMiddleware(MiddlewareMixin):
     """Middleware for logging activity."""
 
@@ -26,10 +18,14 @@ class LogsMiddleware(MiddlewareMixin):
     path = ''
     show = False
     save = False
+    response_dict = {}
 
     def __init__(self, get_response):
         super().__init__(get_response)
         self.show = settings.DEBUG
+
+    def process_exception(self, request, exception):
+        self.response_dict['exception'] = {'class': str(type(exception)), 'error': str(exception)}
 
     def process_view(self, request, func, view_args, view_kwargs):  # noqa: D102
         if hasattr(func, 'view_class'):
@@ -57,8 +53,9 @@ class LogsMiddleware(MiddlewareMixin):
             Log.objects.create(
                 created=timezone.now(),
                 time=end,
+                user=f'{request.user} (pk={request.user.id})',
                 path=self.path,
                 status=response.status_code,
-                response=response.headers.__dict__,
+                response={**response.headers.__dict__, **self.response_dict},
             )
         return response
