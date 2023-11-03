@@ -51,13 +51,17 @@ class FilterForm(forms.Form):
     location = forms.ModelChoiceField(
         label='Location',
         required=False,
-        queryset=Location.objects.all(),
+        queryset=Location.objects.all().exclude(layout=None).order_by('layout__name', 'name'),
         widget=Select2Widget,
     )
     tags = forms.ModelMultipleChoiceField(
         required=False,
         queryset=Tag.objects.all(),
         widget=RowCheckboxSelectMultiple,
+    )
+    no_location = forms.BooleanField(
+        label='Show items without location set',
+        required=False,
     )
     starts_with = forms.ChoiceField(
         required=False,
